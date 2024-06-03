@@ -1,6 +1,7 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
+import { useState } from "react";
 
 const CardContainer = styled.section`
   background-color: ${(props) => props.theme.colors.dark20};
@@ -24,8 +25,15 @@ const Date = styled.p`
   font-weight: 500;
 `;
 
-const IconStyle = styled(FaRegHeart)`
+const IconStyleEmpty = styled(FaRegHeart)`
   font-size: 32px;
+  cursor: pointer;
+`;
+
+const IconStyleFully = styled(FaHeart)`
+  font-size: 32px;
+  cursor: pointer;
+  color: ${(props) => props.theme.colors.brandColor};
 `;
 
 const Title = styled.h2`
@@ -42,11 +50,19 @@ const Description = styled.p`
 `;
 
 function Card({ title, date, description }) {
+  const [icon, setIcon] = useState(<IconStyleEmpty />);
+
+  const handleIconClick = () => {
+    setIcon((prevIcon) =>
+      prevIcon.type === IconStyleEmpty ? <IconStyleFully /> : <IconStyleEmpty />
+    );
+  };
+
   return (
     <CardContainer>
       <CardHeader>
         <Date>{date}</Date>
-        <IconStyle />
+        <div onClick={handleIconClick}>{icon}</div>
       </CardHeader>
       <Title>{title}</Title>
       <Description>{description}</Description>
